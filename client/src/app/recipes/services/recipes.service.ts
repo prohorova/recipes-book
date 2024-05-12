@@ -13,10 +13,6 @@ export class RecipesService {
 
   http = inject(HttpClient);
 
-  private filterRecipesSubject$ = new BehaviorSubject<Partial<Recipe>>({});
-
-  public filterRecipesAction$ = this.filterRecipesSubject$.asObservable();
-
   getRecipesList(): Observable<Recipe[]> {
     return this.http.get<Recipe[]>(`${this.baseUrl}/recipes`);
   }
@@ -36,10 +32,5 @@ export class RecipesService {
   deleteRecipe(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/recipes/${id}`);
   }
-
-  updateFilter(filter: Partial<Recipe>) {
-    this.filterRecipesSubject$.next(filter);
-  }
-
 
 }

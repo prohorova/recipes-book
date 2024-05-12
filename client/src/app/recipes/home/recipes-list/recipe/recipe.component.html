@@ -4,7 +4,7 @@
   </mat-card-header>
   <img mat-card-image data-testid="image" [src]="recipe.imageUrl ? recipe.imageUrl : 'assets/img/placeholder.jpg'"/>
   <mat-card-actions>
-    <button mat-button color="primary" data-testid="view-btn" [routerLink]="['/recipes', recipe._id]">View</button>
+    <button mat-button color="primary" data-testid="view-btn" [routerLink]="['/recipes/view', recipe._id]">View</button>
     <button mat-button color="secondary" data-testid="edit-btn" [routerLink]="['/recipes/edit', recipe._id]">Edit</button>
     <button mat-button color="warn" data-testid="delete-btn" (click)="delete.next(recipe)">Delete</button>
   </mat-card-actions>

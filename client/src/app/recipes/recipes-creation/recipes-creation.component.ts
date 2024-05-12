@@ -1,22 +1,8 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {
-  BehaviorSubject,
-  catchError,
-  filter,
-  finalize,
-  ignoreElements,
-  map,
-  of,
-  repeat,
-  share,
-  Subject,
-  switchMap,
-  tap
-} from "rxjs";
-import {RecipesService} from "../services/recipes.service";
 import {Recipe} from "../models/recipe.model";
-import {HttpErrorResponse} from "@angular/common/http";
-import {Router} from "@angular/router";
+import {Store} from "@ngrx/store";
+import * as RecipesCreationActions from '../state/recipes-creation/recipes-creation.actions';
+import {creationError, creationInProgress} from "../state/recipes-creation/recipes-creation.selectors";
 
 @Component({
   selector: 'app-recipes-creation',
@@ -26,31 +12,13 @@ import {Router} from "@angular/router";
 })
 export class RecipesCreationComponent {
 
-  router = inject(Router);
+  store = inject(Store);
 
-  recipesService = inject(RecipesService);
+  saving$ = this.store.select(creationInProgress);
 
-  saving$ = new BehaviorSubject(false);
+  saveError$ = this.store.select(creationError);
 
-  saveAction$ = new Subject<Partial<Recipe>>();
-
-  save$ = this.saveAction$.pipe(
-    tap(() => this.saving$.next(true)),
-    filter((data: Partial<Recipe>): data is Recipe => !!(data)),
-    switchMap((data: Recipe) => this.recipesService.saveRecipe(data)),
-    tap(() => {
-      this.saving$.next(true);
-      this.router.navigateByUrl('recipes')
-    }),
-    finalize(() => this.saving$.next(false)),
-    share()
-  );
-
-  saveError$ = this.save$.pipe(
-    ignoreElements(),
-    catchError((err: HttpErrorResponse) => of(err)),
-    map(() => 'There was an error saving a recipe'),
-    repeat()
-  );
-
+  createRecipe(recipe: Partial<Recipe>) {
+    this.store.dispatch(RecipesCreationActions.createRecipe({recipe: <Recipe>recipe}));
+  }
 }

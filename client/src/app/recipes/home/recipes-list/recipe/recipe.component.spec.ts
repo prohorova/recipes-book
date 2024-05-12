@@ -45,14 +45,14 @@ describe('RecipeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render recipe title', () => {
+  it('should render recipes-details title', () => {
     fixture.componentRef.setInput('recipe', recipe);
     fixture.detectChanges();
     const titleDe = fixture.debugElement.query(By.css('[data-testid="title"]'));
     expect(titleDe.nativeElement.textContent).toEqual(recipe.title);
   });
 
-  it('should render image placeholder if recipe does not have an image', () => {
+  it('should render image placeholder if recipes-details does not have an image', () => {
     const imagePlaceholder = 'assets/img/placeholder.jpg';
     fixture.componentRef.setInput('recipe', recipe);
     fixture.detectChanges();
@@ -60,7 +60,7 @@ describe('RecipeComponent', () => {
     expect(imageDe.nativeElement.src).toContain(imagePlaceholder);
   });
 
-  it('should render recipe image', () => {
+  it('should render recipes-details image', () => {
     const recipeWithImage = Object.assign({}, recipe, {imageUrl: 'imageUrl'});
     fixture.componentRef.setInput('recipe', recipeWithImage);
     fixture.detectChanges();
@@ -68,7 +68,7 @@ describe('RecipeComponent', () => {
     expect(imageDe.nativeElement.src).toContain(recipeWithImage.imageUrl);
   });
 
-  it('should redirect to recipe edit page', fakeAsync(() => {
+  it('should redirect to recipes-details edit page', fakeAsync(() => {
     fixture.componentRef.setInput('recipe', recipe);
     fixture.detectChanges();
     const editBtnDe = fixture.debugElement.query(By.css('[data-testid="edit-btn"]'));
@@ -77,7 +77,7 @@ describe('RecipeComponent', () => {
     expect(TestBed.inject(Router).url).toEqual('/recipes/edit/' + recipe._id);
   }));
 
-  it('should redirect to recipe details page', fakeAsync(() => {
+  it('should redirect to recipes-details details page', fakeAsync(() => {
     fixture.componentRef.setInput('recipe', recipe);
     fixture.detectChanges();
     const viewBtnDe = fixture.debugElement.query(By.css('[data-testid="view-btn"]'));

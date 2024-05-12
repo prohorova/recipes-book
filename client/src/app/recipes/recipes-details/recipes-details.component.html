@@ -1,4 +1,4 @@
-<ng-container *ngIf="{loading: loading$ | async, recipe: recipe$ | async, error: recipesError$ | async} as vm">
+<ng-container *ngIf="{loading: recipeLoading$ | async, recipe: recipe$ | async, error: recipeError$ | async} as vm">
   <div class="recipe" *ngIf="vm.recipe">
     <div class="recipe-image">
       <img [src]="vm.recipe.imageUrl ? vm.recipe.imageUrl : 'assets/img/placeholder.jpg'">

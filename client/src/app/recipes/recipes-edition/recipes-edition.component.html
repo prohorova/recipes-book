@@ -1,9 +1,8 @@
 <ng-container *ngIf="{
-  loading: loading$ | async,
-  recipe: recipe$ | async,
-  save: save$ | async,
-  saving: saving$ | async,
-  error: saveError$ | async
+  loading: recipeToUpdateLoading$ | async,
+  recipe: recipeToUpdate$ | async,
+  saving: updateInProgress$ | async,
+  error: updateError$ | async
 } as vm">
   <h2>Edit recipe</h2>
   <mat-spinner class="spinner" *ngIf="vm.loading"></mat-spinner>
@@ -11,6 +10,6 @@
   <app-recipes-form *ngIf="vm.recipe"
                     [saving]="vm.saving || false"
                     [recipe]="vm.recipe"
-                    (save)="saveAction$.next($event)">
+                    (save)="updateRecipe(vm.recipe, $event)">
   </app-recipes-form>
 </ng-container>

@@ -1,9 +1,9 @@
-<ng-container *ngIf="{recipes: filteredRecipes$ | async, delete: delete$ | async} as vm">
+<ng-container *ngIf="{recipes: recipes$ | async, loading: loading$ | async} as vm">
   <div class="recipes" *ngIf="vm.recipes">
     <div *ngIf="!vm.recipes.length">No results found</div>
     <app-recipe *ngFor="let recipe of vm.recipes; trackBy:trackRecipes"
                 [recipe]="recipe"
-                (delete)="deleteAction$.next($event)">
+                (delete)="onDelete($event)">
     </app-recipe>
   </div>
 </ng-container>

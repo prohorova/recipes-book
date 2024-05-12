@@ -8,7 +8,7 @@ import {RecipesDetailsComponent} from "./recipes-details/recipes-details.compone
 import {RecipesEditionComponent} from "./recipes-edition/recipes-edition.component";
 import {RecipesRoutingModule} from "./recipes-routing.module";
 import {MatInputModule} from "@angular/material/input";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 import {MatCardModule} from "@angular/material/card";
 import {HttpClientModule} from "@angular/common/http";
 import {MatButtonModule} from "@angular/material/button";
@@ -16,6 +16,10 @@ import { RecipesFormComponent } from './recipes-form/recipes-form.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { RecipeComponent } from './home/recipes-list/recipe/recipe.component';
+import { StoreModule } from '@ngrx/store';
+import * as fromRecipes from './state/recipes.reducers';
+import {EffectsModule} from "@ngrx/effects";
+import {effects} from "./state/recipes.effects";
 
 
 
@@ -28,7 +32,7 @@ import { RecipeComponent } from './home/recipes-list/recipe/recipe.component';
     RecipesDetailsComponent,
     RecipesEditionComponent,
     RecipesFormComponent,
-    RecipeComponent
+    RecipeComponent,
   ],
   imports: [
     CommonModule,
@@ -41,7 +45,12 @@ import { RecipeComponent } from './home/recipes-list/recipe/recipe.component';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    StoreModule.forFeature(
+      fromRecipes.recipesFeatureKey,
+      fromRecipes.recipesReducer
+    ),
+    EffectsModule.forFeature(...effects)
   ]
 })
 export class RecipesModule { }

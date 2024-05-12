@@ -86,7 +86,7 @@ describe('RecipesListComponent', () => {
   it('should render recipes', () => {
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      const recipesRows = fixture.nativeElement.querySelectorAll('app-recipe');
+      const recipesRows = fixture.nativeElement.querySelectorAll('app-recipes-details');
       expect(recipesRows.length).toEqual(recipes.length);
     })
   });
@@ -99,7 +99,7 @@ describe('RecipesListComponent', () => {
     service.updateFilter(filter);
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      const recipesRows = fixture.nativeElement.querySelectorAll('app-recipe');
+      const recipesRows = fixture.nativeElement.querySelectorAll('app-recipes-details');
       expect(recipesRows.length).toEqual(recipes.length - 1);
     })
   });
