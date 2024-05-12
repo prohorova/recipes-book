@@ -1,0 +1,22 @@
+.recipe-form-card {
+  margin-bottom: 20px;
+  .recipe-form {
+    display: flex;
+    flex-direction:column;
+    .recipe-form-inputs {
+      display: flex;
+      gap: 20px;
+      > div {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 20px;
+  justify-content: end;
+}
