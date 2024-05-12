@@ -1,25 +1,15 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {
-  BehaviorSubject,
-  catchError,
-  filter,
-  finalize,
-  ignoreElements,
-  map,
-  of,
-  repeat,
-  share,
-  Subject,
-  switchMap,
-  tap
-} from "rxjs";
+import {ChangeDetectionStrategy, Component, DestroyRef, inject, signal} from '@angular/core';
+import {catchError, of, tap} from "rxjs";
 import {RecipesService} from "../services/recipes.service";
 import {Recipe} from "../models/recipe.model";
-import {HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {RecipesFormComponent} from "../recipes-form/recipes-form.component";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-recipes-creation',
+  standalone: true,
+  imports: [RecipesFormComponent],
   templateUrl: './recipes-creation.component.html',
   styleUrl: './recipes-creation.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -28,29 +18,30 @@ export class RecipesCreationComponent {
 
   router = inject(Router);
 
+  destroyRef = inject(DestroyRef);
+
   recipesService = inject(RecipesService);
 
-  saving$ = new BehaviorSubject(false);
+  saving = signal(false);
 
-  saveAction$ = new Subject<Partial<Recipe>>();
+  error = signal('');
 
-  save$ = this.saveAction$.pipe(
-    tap(() => this.saving$.next(true)),
-    filter((data: Partial<Recipe>): data is Recipe => !!(data)),
-    switchMap((data: Recipe) => this.recipesService.saveRecipe(data)),
-    tap(() => {
-      this.saving$.next(true);
-      this.router.navigateByUrl('recipes')
-    }),
-    finalize(() => this.saving$.next(false)),
-    share()
-  );
-
-  saveError$ = this.save$.pipe(
-    ignoreElements(),
-    catchError((err: HttpErrorResponse) => of(err)),
-    map(() => 'There was an error saving a recipe'),
-    repeat()
-  );
+  save(data: Recipe) {
+    this.error.set('');
+    this.saving.set(true);
+    this.recipesService.saveRecipe(data).pipe(
+      tap(() => {
+        this.saving.set(false);
+        this.router.navigateByUrl('recipes')
+      }),
+      catchError((err) => of(err).pipe(
+        tap(() => {
+          this.saving.set(false);
+          this.error.set('There was an error saving a recipe');
+        }),
+      )),
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe()
+  }
 
 }

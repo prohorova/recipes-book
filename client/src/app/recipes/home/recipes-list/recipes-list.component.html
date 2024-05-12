@@ -1,9 +1,14 @@
-<ng-container *ngIf="{recipes: filteredRecipes$ | async, delete: delete$ | async} as vm">
-  <div class="recipes" *ngIf="vm.recipes">
-    <div *ngIf="!vm.recipes.length">No results found</div>
-    <app-recipe *ngFor="let recipe of vm.recipes; trackBy:trackRecipes"
-                [recipe]="recipe"
-                (delete)="deleteAction$.next($event)">
+@if (loading()) {
+  <mat-spinner class="spinner"></mat-spinner>
+} @else {
+<div class="recipes">
+  @if (!filteredRecipes().length) {
+    <div>No results found</div>
+  }
+  @for (recipe of filteredRecipes(); track recipe._id) {
+    <app-recipe [recipe]="recipe"
+                (delete)="deleteRecipe($event)">
     </app-recipe>
-  </div>
-</ng-container>
+  }
+</div>
+}

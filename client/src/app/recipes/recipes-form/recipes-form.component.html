@@ -36,19 +36,16 @@
   <mat-card-actions class="actions">
     <button mat-raised-button
             color="secondary"
-            [disabled]="saving"
+            [disabled]="saving()"
             (click)="goBack()">
       Back
     </button>
 
     <button mat-raised-button
             color="primary"
-            [disabled]="!recipeForm.valid || saving"
-            (click)="save.next(recipeForm.value)">
-      <span *ngIf="!saving">Save</span>
-      <span *ngIf="saving">
-          Saving...
-        </span>
+            [disabled]="!recipeForm.valid || saving()"
+            (click)="saveChanges()">
+      @if (saving()) { Saving... } @else { Save }
     </button>
   </mat-card-actions>
 </mat-card>

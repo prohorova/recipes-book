@@ -1,16 +1,15 @@
-<ng-container *ngIf="{
-  loading: loading$ | async,
-  recipe: recipe$ | async,
-  save: save$ | async,
-  saving: saving$ | async,
-  error: saveError$ | async
-} as vm">
-  <h2>Edit recipe</h2>
-  <mat-spinner class="spinner" *ngIf="vm.loading"></mat-spinner>
-  <div *ngIf="vm.error">{{vm.error}}</div>
-  <app-recipes-form *ngIf="vm.recipe"
-                    [saving]="vm.saving || false"
-                    [recipe]="vm.recipe"
-                    (save)="saveAction$.next($event)">
+<h2>Edit recipe</h2>
+
+@if (loading()) {
+  <mat-spinner class="spinner"></mat-spinner>
+}
+@if (error(); as error) {
+  <div>{{error}}</div>
+}
+@if (recipe(); as recipe) {
+  <app-recipes-form [saving]="saving()"
+                    [recipe]="recipe"
+                    (save)="save($event)">
   </app-recipes-form>
-</ng-container>
+}
+

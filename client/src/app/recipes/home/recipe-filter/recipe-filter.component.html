@@ -1,31 +1,32 @@
-<ng-container *ngIf="{filter: filter$ | async} as vm">
-  <mat-card class="filter">
-    <mat-card-header>
-      <mat-card-title>Filters</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form class="filter-form" data-testid="filter-form" [formGroup]="filterForm" (submit)="updateFilter()">
+<mat-card class="filter">
+  <mat-card-header>
+    <mat-card-title>Filters</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="filter-form"
+          data-testid="filter-form"
+          [formGroup]="filterForm"
+          (submit)="updateFilter()">
 
-        <mat-form-field appearance="fill">
-          <mat-label>Keyword</mat-label>
-          <input matInput formControlName="title">
-        </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Keyword</mat-label>
+        <input matInput formControlName="title">
+      </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Ingredient</mat-label>
-          <input matInput formControlName="ingredients">
-        </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Ingredient</mat-label>
+        <input matInput formControlName="ingredients">
+      </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Cooking time</mat-label>
-          <input matInput formControlName="cookTime">
-        </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Cooking time</mat-label>
+        <input matInput formControlName="cookTime">
+      </mat-form-field>
 
-        <button type="submit" class="submit" mat-raised-button color="accent">See results</button>
+      <button type="submit" class="submit" mat-raised-button color="accent">See results</button>
 
-        <button mat-raised-button color="primary" (click)="reset()">Reset</button>
+      <button mat-raised-button color="primary" (click)="reset()">Reset</button>
 
-      </form>
-    </mat-card-content>
-  </mat-card>
-</ng-container>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,11 +1,8 @@
-<ng-container *ngIf="{
-  save: save$ | async,
-  saving: saving$ | async,
-  error: saveError$ | async
-} as vm">
-  <h2>Create recipe</h2>
-  <div *ngIf="vm.error">{{vm.error}}</div>
-  <app-recipes-form [saving]="vm.saving || false"
-                    (save)="saveAction$.next($event)">
-  </app-recipes-form>
-</ng-container>
+<h2>Create recipe</h2>
+
+@if (error(); as error) {
+  <div>{{error}}</div>
+}
+<app-recipes-form [saving]="saving()"
+                  (save)="save($event)">
+</app-recipes-form>
