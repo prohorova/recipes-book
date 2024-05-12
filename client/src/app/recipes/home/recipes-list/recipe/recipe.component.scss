@@ -1,0 +1,9 @@
+.recipe {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 220px;
+  .header {
+    flex: 1;
+  }
+}

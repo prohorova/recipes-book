@@ -1,0 +1,9 @@
+.recipe {
+  display: flex;
+  .recipe-image {
+    flex: 1;
+  }
+  .recipe-data {
+    flex: 2;
+  }
+}

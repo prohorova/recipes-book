@@ -1,0 +1,14 @@
+<ng-container *ngIf="{loading: loading$ | async, recipe: recipe$ | async, error: recipesError$ | async} as vm">
+  <div class="recipe" *ngIf="vm.recipe">
+    <div class="recipe-image">
+      <img [src]="vm.recipe.imageUrl ? vm.recipe.imageUrl : 'assets/img/placeholder.jpg'">
+    </div>
+    <div class="recipe-data">
+      <h2>{{vm.recipe.title}}</h2>
+      <p><b>Cooking time:</b> {{vm.recipe.cookTime}} min</p>
+      <p><b>Servings:</b> {{vm.recipe.servings}}</p>
+      <p><b>Ingredients:</b> {{vm.recipe.ingredients}}</p>
+      <p><b>Instructions:</b> {{vm.recipe.instructions}}</p>
+    </div>
+  </div>
+</ng-container>
