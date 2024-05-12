@@ -1,13 +1,14 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {ActivatedRoute, Params, Router} from "@angular/router";
-import {BehaviorSubject, Subject, switchMap, tap, catchError, of, filter, finalize, ignoreElements, map, share, repeat} from "rxjs";
-import {RecipesService} from "../services/recipes.service";
+import {ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {ActivatedRoute} from "@angular/router";
 import {Recipe} from "../models/recipe.model";
-import {HttpErrorResponse} from "@angular/common/http";
-import {withLatestFrom} from "rxjs/operators";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {RecipesFormComponent} from "../recipes-form/recipes-form.component";
+import {RecipesStore} from "../recipes.state";
 
 @Component({
   selector: 'app-recipes-edition',
+  standalone: true,
+  imports: [MatProgressSpinnerModule, RecipesFormComponent],
   templateUrl: './recipes-edition.component.html',
   styleUrl: './recipes-edition.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -16,42 +17,22 @@ export class RecipesEditionComponent {
 
   route = inject(ActivatedRoute);
 
-  router = inject(Router);
+  readonly store = inject(RecipesStore);
 
-  recipesService = inject(RecipesService);
+  recipe = this.store.recipeToUpdate;
 
-  loading$ = new BehaviorSubject(false);
+  loading = this.store.recipeToUpdateLoading;
 
-  saving$ = new BehaviorSubject(false);
+  saving = this.store.updateInProgress;
 
-  saveAction$ = new Subject<Partial<Recipe>>();
+  error = this.store.updateError;
 
-  recipe$ = this.route.params.pipe(
-    map((params: Params) => params['id']),
-    filter((id: string) => !!id),
-    tap(() => this.loading$.next(true)),
-    switchMap((id: string) => this.recipesService.getRecipe(id)),
-    tap(() => this.loading$.next(false)),
-    finalize(() => this.loading$.next(false)),
-  );
+  ngOnInit() {
+    const id = this.route.snapshot.params['id'];
+    this.store.loadRecipeToEdit(id);
+  }
 
-  save$ = this.saveAction$.pipe(
-    tap(() => this.saving$.next(true)),
-    filter((data: Partial<Recipe>): data is Recipe => !!(data)),
-    withLatestFrom(this.recipe$),
-    switchMap(([data, recipe]) => this.recipesService.editRecipe({_id: recipe._id, ...data})),
-    tap(() => {
-      this.saving$.next(true);
-      this.router.navigateByUrl('recipes')
-    }),
-    finalize(() => this.saving$.next(false)),
-    share()
-  );
-
-  saveError$ = this.save$.pipe(
-    ignoreElements(),
-    catchError((err: HttpErrorResponse) => of(err)),
-    map(() => 'There was an error updating a recipe'),
-    repeat()
-  );
+  save(recipe: Recipe) {
+    this.store.editRecipe(Object.assign({_id: this.recipe()!._id, ...recipe}));
+  }
 }

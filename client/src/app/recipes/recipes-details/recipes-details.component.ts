@@ -1,12 +1,10 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {RecipesService} from "../services/recipes.service";
-import {ActivatedRoute, Params} from "@angular/router";
-import {BehaviorSubject, finalize, map, of, share, switchMap, tap} from "rxjs";
-import {catchError, ignoreElements} from "rxjs/operators";
-import {HttpErrorResponse} from "@angular/common/http";
+import {ActivatedRoute} from "@angular/router";
+import {RecipesStore} from "../recipes.state";
 
 @Component({
   selector: 'app-recipes-details',
+  standalone: true,
   templateUrl: './recipes-details.component.html',
   styleUrl: './recipes-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -15,23 +13,15 @@ export class RecipesDetailsComponent {
 
   route = inject(ActivatedRoute);
 
-  recipesService = inject(RecipesService);
+  readonly store = inject(RecipesStore);
 
-  loading$ = new BehaviorSubject(false);
+  recipe = this.store.recipe;
 
-  recipe$ = this.route.params.pipe(
-    map((params: Params) => params['id']),
-    tap(() => this.loading$.next(true)),
-    switchMap((id: string) => this.recipesService.getRecipe(id)),
-    tap(() => this.loading$.next(false)),
-    finalize(() => this.loading$.next(false)),
-    share()
-  );
+  error = this.store.recipeError;
 
-  recipesError$ = this.recipe$.pipe(
-    ignoreElements(),
-    catchError((err: HttpErrorResponse) => of(err)),
-    map(() => 'Could not get recipe')
-  );
+  ngOnInit() {
+    const id = this.route.snapshot.params['id'];
+    this.store.loadRecipe(id);
+  }
 
 }
