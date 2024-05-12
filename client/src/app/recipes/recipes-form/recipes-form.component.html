@@ -1,0 +1,54 @@
+<mat-card class="recipe-form-card">
+  <mat-card-content>
+    <form class="recipe-form" [formGroup]="recipeForm">
+      <div class="recipe-form-inputs">
+        <div>
+          <mat-form-field class="input-field" appearance="fill">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" placeholder="Enter title">
+          </mat-form-field>
+
+          <mat-form-field class="input-field" appearance="fill">
+            <mat-label>Ingredients</mat-label>
+            <input matInput formControlName="ingredients" placeholder="Enter ingredients separated by commas">
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field class="input-field" appearance="fill">
+            <mat-label>Cooking time</mat-label>
+            <input type="number" matInput formControlName="cookTime" placeholder="Enter cooking time in minutes">
+          </mat-form-field>
+
+          <mat-form-field class="input-field" appearance="fill">
+            <mat-label>Servings</mat-label>
+            <input type="number" matInput formControlName="servings" placeholder="Enter a number of servings">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-form-field class="instructions-input-field" appearance="fill">
+        <mat-label>Instructions</mat-label>
+        <textarea matInput formControlName="instructions" placeholder="Enter instructions"></textarea>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions class="actions">
+    <button mat-raised-button
+            color="secondary"
+            [disabled]="saving"
+            (click)="goBack()">
+      Back
+    </button>
+
+    <button mat-raised-button
+            color="primary"
+            [disabled]="!recipeForm.valid || saving"
+            (click)="save.next(recipeForm.value)">
+      <span *ngIf="!saving">Save</span>
+      <span *ngIf="saving">
+          Saving...
+        </span>
+    </button>
+  </mat-card-actions>
+</mat-card>
