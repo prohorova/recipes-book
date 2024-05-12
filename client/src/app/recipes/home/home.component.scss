@@ -1,0 +1,13 @@
+.home {
+  display: flex;
+  gap: 15px;
+}
+
+.filter {
+  flex: 1;
+  min-width: 300px;
+}
+
+.recipes {
+  flex: 5;
+}

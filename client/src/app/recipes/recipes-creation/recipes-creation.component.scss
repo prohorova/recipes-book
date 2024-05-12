@@ -1,0 +1,39 @@
+.divider {
+  margin-bottom: 20px;
+}
+
+.card {
+  margin-bottom: 10px;
+}
+
+.new-recipe-form {
+  display: flex;
+  gap: 15px;
+}
+
+.inputs {
+  flex: 3;
+}
+
+.inputs-row {
+  display: flex;
+  gap: 10px;
+}
+
+.inputs-row .input-field {
+  flex: 1;
+}
+
+.tags {
+  flex: 1;
+}
+
+.radio-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.actions {
+  text-align: right;
+}
+
